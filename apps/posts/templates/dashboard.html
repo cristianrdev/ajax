@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <title>Posts</title>
+</head>
+
+<body>
+    <div class="container">
+
+
+        <h1>Mis posts</h1>
+        <div class="d-flex align-content-start flex-wrap">
+            {% for p in post %}
+            <div class="border border-danger rounded m-3 p-1">
+                {{p.post_content}}
+            </div>
+
+
+
+            {% endfor %}
+        </div>
+
+
+        <form method="post" action="{% url 'dashboard' %}">
+            {% csrf_token %}
+            <div><p>Escriba su post acá:</p></div>
+            {{new_post_form.as_p}}
+            <input type="submit" class="btn btn-primary" value="Postear!!">
+        </form>
+
+    </div>
+
+
+</body>
+
+</html>
