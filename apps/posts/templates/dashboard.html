@@ -14,22 +14,17 @@
 
 <body>
     <div class="container">
-
-
         <h1>Mis posts</h1>
-        <div class="d-flex align-content-start flex-wrap">
-            {% for p in post %}
-            <div class="border border-danger rounded m-3 p-1">
-                {{p.post_content}}
-            </div>
-
-
-
-            {% endfor %}
+        <!-- INICIO lista de posts -->
+        <div class="d-flex align-content-start flex-wrap " id="list-posts">
+            {% include "posts_dashboard.html" %}
+            
         </div>
+        <!-- Fin lista de posts -->
+        
+        <!-- Muestra el formulario -->
 
-
-        <form method="post" action="{% url 'dashboard' %}">
+        <form method="post" action="{% url 'dashboard' %}" id="form-new-post">
             {% csrf_token %}
             <div>
                 <p>Escriba su post acá:</p>
@@ -37,18 +32,29 @@
             {{new_post_form.as_p}}
             <input type="submit" class="btn btn-primary" value="Postear!!">
         </form>
-
+        <!-- Termina el formulario -->
     </div>
-
-
 </body>
 <script>
-    // Podrias poner este codigo en otro archivo javascript.. Recuerda usar $(document).ready() si la etiqueta del script se incluye antes de los nodos DOM que le interesn...
-    $('form').submit(function (e) {
-        // preventDefault detiene la activación de la accion predeterminada del evento (e)
-        e.preventDefault();
-        console.log("Form submitted but no HTTP request sent to server!");
-    });
+    $('#form-new-post').submit(function (e) {
+        e.preventDefault()
+        $.ajax({
+            url: "{% url 'render_posts' %}",
+            method: 'post',
+            data: $(this).serialize(),
+            success: function (serverResponse) {
+                $('#list-posts').html(serverResponse);
+
+                console.log(serverResponse);
+                // alert("Ha subido un post " + serverResponse.name);
+            }
+        })
+        $('#form-new-post').trigger('reset') //limpia le contenido del form
+    })
+
+
+
+
 </script>
 
 
